@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysite
+  labels:
+    app: mysite
+spec:
+  ports:
+  - port: 8000
+    name: http
+  selector:
+    app: mysite
+  type: NodePort # Or LoadBalancer in production w/ proper security
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mysite
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysite
+    spec:
+      containers:
+      - name: mysite
+        image: matibek/mysite
+        imagePullPolicy: Always # For debuging
+        ports:
+        - containerPort: 8000
+
